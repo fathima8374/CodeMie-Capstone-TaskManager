@@ -1,0 +1,14 @@
+{
+  "name": "task-manager-ui-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright + Gherkin UI tests for the Task Manager",
+  "scripts": {
+    "test:ui": "bddgen && playwright test",
+    "report:ui": "playwright show-report playwright-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "playwright-bdd": "^9.2.1"
+  }
+}

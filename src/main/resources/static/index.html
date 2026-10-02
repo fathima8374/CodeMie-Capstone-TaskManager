@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Task Manager</h1>
+
+    <div id="error-banner" class="error" hidden data-testid="error-banner"></div>
+
+    <section class="add-task">
+      <h2>Add Task</h2>
+      <form id="add-task-form">
+        <label>
+          Title *
+          <input id="task-title" data-testid="task-title-input" type="text" autocomplete="off" />
+        </label>
+ 
+        <label>
+          Due date (optional)
+          <input id="task-duedate" data-testid="task-duedate-input" type="date" />
+        </label>
+
+        <button id="add-task-btn" data-testid="add-task-button" type="submit">Add</button>
+      </form>
+    </section>
+
+    <section class="filters">
+      <h2>Filters</h2>
+      <div class="filter-row">
+        <button data-testid="filter-all" data-filter="all" class="filter-btn active">All</button>
+        <button data-testid="filter-active" data-filter="active" class="filter-btn">Active</button>
+        <button data-testid="filter-completed" data-filter="completed" class="filter-btn">Completed</button>
+        <button data-testid="filter-overdue" data-filter="overdue" class="filter-btn">Overdue</button>
+      </div>
+    </section>
+
+    <section class="tasks">
+      <h2>Tasks</h2>
+      <p id="empty-state" class="empty" data-testid="empty-state" hidden>No tasks yet.</p>
+      <ul id="task-list" data-testid="task-list"></ul>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
