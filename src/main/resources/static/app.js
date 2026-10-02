@@ -39,7 +39,7 @@ async function apiFetch(path, options = {}) {
 
   // error path
   let errMessage = `Request failed (${res.status}) ` + (res.statusText ? `: ${res.statusText}` : "");
-  if (isPson) {
+  if (isJson) {
     try {
       const body = await res.json();
       if (body && body.message) {
@@ -49,7 +49,7 @@ async function apiFetch(path, options = {}) {
       // ignore parse error
     }
   }
-  throw new Error(errSessage);
+  throw new Error(errMessage);
 }
 
 function showError(message) {
@@ -67,7 +67,7 @@ function clearError() {
 function localDateFromISO(isoDate) {
   // isoDate expected "YYYY-MM-DD"
   if (!isoDate) return null;
-  const [match, y, m, d] = isoDate.match(/^(\d{4})-(\d{2})-(\d{2}$/) || [];
+  const [match, y, m, d] = isoDate.match(/^(\d{4})-(\d{2})-(\d{2})$/) || [];
   if (!match) return null;
   return new Date(Number(y), Number(m) - 1, Number(d));
  }
@@ -169,11 +169,13 @@ async function onCreate(t) {
     clearError();
     await apiFetch("/todo", {
       method: "POST",
-      body: JSON.stringify(T),
+      body: JSON.stringify(t),
     });
     await loadTasks();
+    return true;
   } catch (e) {
     showError(e ? e.message : "Could not create task.");
+    return false;
   }
 }
 
@@ -216,7 +218,6 @@ function setFilter(nextFilter) {
 }
 
 // event wiring
-y
 el.addForm.addEventListener("submit", (ev) => {
   ev.preventDefault();
   clearError();
@@ -237,9 +238,11 @@ el.addForm.addEventListener("submit", (ev) => {
     payload.dueDate = dueDate;
   }
 
-  onCreate(payload).then(() => {
-    el.titleInput.value = "";
-    el.dueDateInput.value = "";
+  onCreate(payload).then((ok) => {
+    if (ok) {
+      el.titleInput.value = "";
+      el.dueDateInput.value = "";
+    }
   });
 });
 

@@ -27,13 +27,13 @@ public class ToDoList_Controller {
 	private ToDoList_Service todoService;
 	
 	
-GETMapping("/readall")
+	@GetMapping("/readall")
 	public List<ToDoList> getAllToDoList(){
 		return todoService.getAll();
 	}
 	
 	
-GETMapping("/read/{id}")
+	@GetMapping("/read/{id}")
 		public ToDoList getById(@PathVariable int id) {
 		ToDoList task = todoService.getById(id);
 		if (task == null) {
@@ -45,7 +45,7 @@ GETMapping("/read/{id}")
 		@PostMapping
 		public ResponseEntity<ToDoList> add(@Valid @RequestBody ToDoList todo) {
 		    ToDoList created = todoService.addTask(todo);
-		    return ResponseEntity.status(HttpStatuS.CREATED).body(created);
+		    return ResponseEntity.status(HttpStatus.CREATED).body(created);
 		}
 
 		@PutMapping("/update/{id}")
@@ -63,6 +63,6 @@ GETMapping("/read/{id}")
 			if (!deleted) {
 				throw new NotFoundException("Task with id " + id + " not found");
 			}
-			return ResponseEntity.no Content().build();
+			return ResponseEntity.noContent().build();
 		}
 }

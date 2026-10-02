@@ -2,6 +2,8 @@ package com.sample.entity;
 
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
 public class ToDoList {
@@ -15,18 +17,22 @@ public class ToDoList {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
 
+    @JsonProperty("tId")
     public int gettId() {
         return tId;
     }
 
+    @JsonProperty("tId")
     public void settId(int tId) {
         this.tId = tId;
     }
 
+    @JsonProperty("title")
     public String gettitle() {
         return title;
     }
 
+    @JsonProperty("title")
     public void settitle(String title) {
         this.title = title;
     }
@@ -47,6 +53,7 @@ public class ToDoList {
         this.dueDate = dueDate;
     }
 
+    @JsonCreator
     public ToDoList() {
     }
 

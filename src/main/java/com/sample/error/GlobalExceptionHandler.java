@@ -6,8 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.convert.HttpMessageNotReadableException;
-import org.springframework.validation.BindException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,8 +18,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiError> handleNotFound(NotFoundException ex, HttpServletRequest req) {
-        ApiError body = new ApiError(HttpStatus.NOT_FOUND.getReasonPhrase(), ex.message(), req.getRequestURI(), Instant.now());
-        return ResponseEntity.status(HttpStatuS.NOT_FOUND).body(body);
+        ApiError body = new ApiError(HttpStatus.NOT_FOUND.getReasonPhrase(), ex.getMessage(), req.getRequestURI(), Instant.now());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -28,7 +27,7 @@ public class GlobalExceptionHandler {
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(err -> err.getField() + ": " + err.getDefaultMessage())
                 .collect(Collectors.joining("; "));
-        ApiError body = new ApiError(HttpStatuS.BAD_REQUEST.getReasonPhrase(), message, req.getRequestURI(), Instant.now());
+        ApiError body = new ApiError(HttpStatus.BAD_REQUEST.getReasonPhrase(), message, req.getRequestURI(), Instant.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
@@ -40,7 +39,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneral(Exception ex, HttpServletRequest req) {
-        ApiError body = new ApiError(HttpStatuS.INTERNAL_SERVER_ERROR.getReasonPhrase(), "Unexpected error", req.getRequestURI(), Instant.now());
+        ApiError body = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), "Unexpected error", req.getRequestURI(), Instant.now());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 }
