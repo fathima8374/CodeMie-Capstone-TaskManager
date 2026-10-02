@@ -24,16 +24,13 @@ const taskItem = (page, title) => taskItems(page).filter({ hasText: title });
 
 // ---- seeding via API (test data setup) --------------------------------
 
-Given('the following tasks exist:', async ({ request }, dataTable) => {
+Given('the following tasks exist:', async ({ scenarioTasks }, dataTable) => {
   for (const row of dataTable.hashes()) {
-    const res = await request.post('/todo', {
-      data: {
-        title: row.title,
-        completed: row.completed === 'true',
-        dueDate: resolveDate(row.dueDate),
-      },
+    await scenarioTasks.seed({
+      title: row.title,
+      completed: row.completed === 'true',
+      dueDate: resolveDate(row.dueDate),
     });
-    expect(res.status()).toBe(201);
   }
 });
 

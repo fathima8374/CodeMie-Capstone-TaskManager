@@ -33,7 +33,8 @@ module.exports = defineConfig({
   webServer: {
     command: `mvn -q spring-boot:run -Dspring-boot.run.arguments=--server.port=${PORT}`,
     url: `${BASE_URL}/todo/readall`,
-    reuseExistingServer: !process.env.CI,
+    // Always start a fresh in-memory app so a scenario never sees leftover data.
+    reuseExistingServer: false,
     timeout: 120_000,
     stdout: 'ignore',
     stderr: 'pipe',
