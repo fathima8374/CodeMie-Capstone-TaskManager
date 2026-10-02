@@ -2,6 +2,7 @@ package com.sample.entity;
 
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.OptBoolean;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +15,7 @@ public class ToDoList {
     private String title;
     private boolean completed;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "uuuu-MM-dd", lenient = OptBoolean.FALSE)
     private LocalDate dueDate;
 
     @JsonProperty("tId")
