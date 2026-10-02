@@ -142,3 +142,28 @@ Then('I see the error message {string}', async ({ page }, message) => {
   await expect(page.getByTestId('error-banner')).toBeVisible();
   await expect(page.getByTestId('error-banner')).toHaveText(message);
 });
+
+// ---- simulated server failures (route interception, test-side only) ----
+
+Given('the next update request fails with 404 and message {string}', async ({ simulated }, message) => {
+  await simulated.failNext('PUT', '**/todo/update/*', message);
+});
+
+Given('the next delete request fails with 404 and message {string}', async ({ simulated }, message) => {
+  await simulated.failNext('DELETE', '**/todo/delete/*', message);
+});
+
+Then('the update request was intercepted', async ({ simulated }) => {
+  expect(simulated.hits.PUT).toBe(1);
+});
+
+Then('the delete request was intercepted', async ({ simulated }) => {
+  expect(simulated.hits.DELETE).toBe(1);
+});
+
+Then('the task {string} still exists on the server', async ({ request }, title) => {
+  const res = await request.get('/todo/readall');
+  expect(res.ok()).toBeTruthy();
+  const titles = (await res.json()).map((t) => t.title);
+  expect(titles).toContain(title);
+});

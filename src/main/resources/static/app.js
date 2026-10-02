@@ -84,9 +84,9 @@ function isOverdue(task) {
   return due < today;
 }
 
-async function loadTasks() {
+async function loadTasks({ keepError = false } = {}) {
   try {
-    clearError();
+    if (!keepError) clearError();
     const data = await apiFetch("/todo/readall");
     state.tasks = Array.isArray(data) ? data : [];
     render();
@@ -195,7 +195,7 @@ async function onDoToggle(task) {
     await loadTasks();
   } catch (e) {
     showError(e ? e.message : "Could not update task.");
-    await loadTasks();
+    await loadTasks({ keepError: true });
   }
 }
 
@@ -208,7 +208,7 @@ async function onDelete(task) {
     await loadTasks();
   } catch (e) {
     showError(e ? e.message : "Could not delete task.");
-    await loadTasks();
+    await loadTasks({ keepError: true });
   }
 }
 
